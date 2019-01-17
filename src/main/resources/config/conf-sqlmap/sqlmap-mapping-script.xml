@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Fri Feb 20 23:34:39 CST 2015-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scriptMapper">
+    <!-- TODO: 在这里定义各种sql语句，用法请参考iBATIS文档 -->
+    <select id="getApplicationById" parameterType="java.util.Map"
+            resultType="com.transing.mcss4dpm.integration.bo.ApplicationBO">
+        SELECT
+        id,name,app,apppackage,appactivity,platformname,automationname,fullreset,noreset,unicodekeyboard,resetkeyboard,autolaunch
+        ,autolaunch,newcommandtimeout,keystorepath,keystorepassword,keyalias,keyPassword,androidpackage,androidactivity,androidprocess,androiduserunningapp
+        FROM
+        application_info
+        WHERE
+        id = #{id}
+    </select>
+
+    <select id="getScriptInfoByDatatypeId" parameterType="java.util.Map"
+            resultType="com.transing.mcss4dpm.integration.bo.ScriptInfoBO">
+        SELECT
+        id,appid,deviceid,datasourceid,datatypeid,name,status
+        FROM
+        script_info
+        WHERE
+        datatypeid = #{datatypeid}
+    </select>
+
+    <select id="getScriptInfoById" parameterType="java.util.Map"
+            resultType="com.transing.mcss4dpm.integration.bo.ScriptInfoBO">
+        SELECT
+        id,appid,deviceid,datasourceid,datatypeid,name,status
+        FROM
+        script_info
+        WHERE
+        id = #{id}
+    </select>
+
+    <select id="getScriptDetailByScriptid" parameterType="java.util.Map"
+            resultType="com.transing.mcss4dpm.integration.bo.ScriptDetailBO">
+        SELECT
+        id,scriptid,step,elementtype,elementvalue,elementinputparamtype,elementinputparam,actiontype,actionvalue,
+        actioninputparamtype,actioninputparam,actionafterprocessor,block,blocktype,blockvalue,back,path,circle,circlestep,circlestepsize,
+        circleinputtype,circleinputparamid,circleinputparam,circlecutofftype,circlecutoffvalue,circleregulation
+        FROM
+        script_detail
+        WHERE
+        scriptid = #{scriptid}
+        ORDER BY step asc
+    </select>
+
+    <select id="getCrawlRegulationByTypeid" parameterType="java.util.Map"
+            resultType="com.transing.mcss4dpm.integration.bo.CrawlRegulationBO">
+        SELECT
+        id,datasourceid,datasourceid,datatypeid,scriptid,scriptdetailid,item,description,
+        type,step,length,datafrom,crawlparam,crawlarray,afterprocessorarray
+        FROM
+        crawl_regulation
+        WHERE
+        scriptid = #{scriptid}
+        ORDER BY step asc
+    </select>
+
+    <select id="getCrawlRegulationListByTypeid" parameterType="java.util.Map"
+            resultType="com.transing.mcss4dpm.integration.bo.CrawlRegulationListBO">
+        SELECT
+        step,crawlarray,afterprocessorarray,beforeprocessorarray
+        FROM
+        crawl_regulation_list
+        WHERE
+        scriptid = #{scriptid}
+    </select>
+
+    <update id="updateDevicesInfo" parameterType="com.transing.mcss4dpm.integration.bo.DevicesInf">
+        update devices_config
+        <set>
+            <if test="null != height and height!=''">
+                height = #{height},
+            </if>
+            <if test="null != width and width!=''">
+                width = #{width},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
+
+
